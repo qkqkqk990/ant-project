@@ -49,7 +49,7 @@ export default [
         routes: [
           {
             path: 'https://pro.ant.design/docs/getting-started-cn',
-            target: '_blank', // 点击新窗口打开
+            // target: '_blank', // 点击新窗口打开
             name: "mfiles",
           },
           {
@@ -93,6 +93,11 @@ export default [
         ],
       },
       // list
+      {
+        path: '/pages/NewPages/NewPage01',
+        // target: '_blank', // 点击新窗口打开
+        name: "newpage01",//新增文件
+      },
       {
         path: '/list',
         icon: 'table',
