@@ -92,19 +92,28 @@ export default [
           },
         ],
       },
+      {
+        path: '/my/summary',
+        // target: '_blank', // 点击新窗口打开
+        name: "summary",//新增文件
+        
+        routes:[
+          {
+            path: '/my/summary/np01',
+            // target: '_blank', // 点击新窗口打开
+            name: "newpage01",//新增文件
+            component: './NewPages/NewPage01',
+          },
+          {
+            path: '/my/summary/np02',
+            // target: '_blank', // 点击新窗口打开
+            name: "newpage02",//新增文件
+            component: './NewPages/NewPage02',
+          },
+        ],
+      },
       // list
-      {
-        path: '/my/np01',
-        // target: '_blank', // 点击新窗口打开
-        name: "newpage01",//新增文件
-        component: './NewPages/NewPage01',
-      },
-      {
-        path: '/my/np02',
-        // target: '_blank', // 点击新窗口打开
-        name: "newpage02",//新增文件
-        component: './NewPages/NewPage02',
-      },
+
       {
         path: '/list',
         icon: 'table',
