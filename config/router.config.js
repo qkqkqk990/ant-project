@@ -265,12 +265,4 @@ export default [
       },
     ],
   },
-  //new
-  {
-    path:'/new',
-    component:'../layouts/BlankLayout',
-    routes:[
-      { path: '/new', redirect: '../layouts/BlankLayout' },
-    ]
-  },
 ];
