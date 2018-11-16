@@ -94,9 +94,16 @@ export default [
       },
       // list
       {
-        path: '/pages/NewPages/NewPage01',
+        path: '/my/np01',
         // target: '_blank', // 点击新窗口打开
         name: "newpage01",//新增文件
+        component: './NewPages/NewPage01',
+      },
+      {
+        path: '/my/np02',
+        // target: '_blank', // 点击新窗口打开
+        name: "newpage02",//新增文件
+        component: './NewPages/NewPage02',
       },
       {
         path: '/list',

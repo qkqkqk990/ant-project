@@ -215,13 +215,13 @@ class BasicList extends PureComponent {
       }
       return (
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label="任务名称" {...this.formLayout}>
+              <FormItem label="任务名称" {...this.formLayout}>
             {getFieldDecorator('title', {
               rules: [{ required: true, message: '请输入任务名称' }],
               initialValue: current.title,
             })(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="开始时间" {...this.formLayout}>
+              </FormItem>
+              <FormItem label="开始时间" {...this.formLayout}>
             {getFieldDecorator('createdAt', {
               rules: [{ required: true, message: '请选择开始时间' }],
               initialValue: current.createdAt ? moment(current.createdAt) : null,

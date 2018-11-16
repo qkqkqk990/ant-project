@@ -13,6 +13,7 @@ export default {
   'menu.form.stepform.result': 'Step Form(finished)',
   'menu.form.advancedform': 'Advanced Form',
   'menu.newpage01':'NewPage',
+  "menu.newpage02":'NewPage02',
   'menu.list': 'List',
   'menu.list.searchtable': 'Search Table',
   'menu.list.basiclist': 'Basic List',

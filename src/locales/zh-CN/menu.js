@@ -13,6 +13,7 @@ export default {
   'menu.form.stepform.result': '分步表单（完成）',
   'menu.form.advancedform': '高级表单',
   'menu.newpage01':'新页面',
+  "menu.newpage02":'明星菜单',
   'menu.list': '列表页',
   'menu.list.searchtable': '查询表格',
   'menu.list.basiclist': '标准列表',
