@@ -96,7 +96,8 @@ export default [
         path: '/my/summary',
         // target: '_blank', // 点击新窗口打开
         name: "summary",//新增文件
-        
+        icon: 'table',
+
         routes:[
           {
             path: '/my/summary/np01',

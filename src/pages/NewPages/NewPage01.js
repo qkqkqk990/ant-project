@@ -1,18 +1,31 @@
-import React,{ PureComponent} from 'react';
+import React,{Component} from 'react';
 
-class NewPage01 extends PureComponent {
-
-  constructor(props) {
+class NewPage01 extends Component{
+  constructor(props){
     super(props);
+    this.state={
+      date:new Date()
+    };
   }
 
+  componentDidMount(){
+    this.timerID = setInterval(() => this.tick(),1000);
+  }
+  componentWillUnmount(){
+    clearInterval(this.timerID);
+  }
+  tick (){
+    this.setState({
+      date:new Date()
+    });
+  }
   render(){
-    return <div>hello render</div>
+    return (
+      <div>
+        <h1>Hello,world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}</h2>
+      </div>
+    );
   }
-
 }
-
 export default NewPage01;
-
-
-
