@@ -8,6 +8,8 @@ export default {
     currentUser: {},
   },
 
+ 
+
   effects: {
     *fetch(_, { call, put }) {
       const response = yield call(queryUsers);

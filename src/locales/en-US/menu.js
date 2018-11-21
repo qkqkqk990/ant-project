@@ -15,6 +15,7 @@ export default {
   'menu.summary':'menu',
   'menu.summary.newpage01':'NewPage',
   "menu.summary.newpage02":'Super Star',
+  "menu.summary.newpage03":'Management System',
   'menu.list': 'List',
   'menu.list.searchtable': 'Search Table',
   'menu.list.basiclist': 'Basic List',

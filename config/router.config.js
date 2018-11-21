@@ -111,6 +111,13 @@ export default [
             name: "newpage02",//新增文件
             component: './NewPages/NewPage02',
           },
+          {
+            path: '/my/summary/np03',
+            // target: '_blank', // 点击新窗口打开
+            name: "newpage03",//新增文件
+            component: './NewPages/NewPage03',
+          },
+
         ],
       },
       // list
