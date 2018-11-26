@@ -1,28 +1,118 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Button, Icon, List } from 'antd';
+import { Card, Button,Input,Icon, List,Form,Modal } from 'antd';
 
 import Ellipsis from '@/components/Ellipsis';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './CardList.less';
 
+const FormItem=Form.Item;
+
+@Form.create()
 @connect(({ list, loading }) => ({
   list,
   loading: loading.models.list,
 }))
 class CardList extends PureComponent {
+
+  state={visible:false};
   componentDidMount() {
+
     const { dispatch } = this.props;
+
     dispatch({
-      type: 'list/fetch',
+      type: 'list/fetch',//约定的格式
       payload: {
         count: 8,
       },
     });
+
   }
 
+  btnDelete = (item)=>{
+    Modal.confirm({
+      title: '删除任务',
+      content: '确定删除该任务吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => this.delete(item),
+    });
+    // console.log(item);
+  }
+
+  delete =(item)=>{
+    const {dispatch}=this.props;
+    dispatch({
+      type:'list/btnDelete',
+      payload:{
+        id: item.id,
+      },
+    })
+  }
+
+  showEditModal=()=>{
+    this.setState({
+      visible: true,
+    });
+
+  }
+
+  handleOk=()=>{
+    this.setState({
+      visible:false,
+    });
+  }
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
+
+
+  addItem = () => {
+    const {dispatch} = this.props;
+    dispatch({
+      type:'list/addItem',
+      payload:{
+        count:9,
+      },
+    })
+  }
+
+  handleSubmit = (e) => {
+    console.log(e);
+    e.preventDefault();
+    const {
+      form: {
+        validateFields
+      }
+    } = this.props;
+    /// this.props.form.validateFields()
+    validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  }
+
+
+  modifyItem=(item)=>{
+    const {dispatch} = this.props;
+    dispatch({
+      type:'list/modifyItem',
+      payload: {
+        id: item.id,
+        title: item.title,
+      },
+    })
+  };
+
   render() {
+
     const {
       list: { list },
       loading,
@@ -60,6 +150,13 @@ class CardList extends PureComponent {
       </div>
     );
 
+    const {
+      form: {
+        getFieldDecorator,
+      }
+    } = this.props;
+
+
     return (
       <PageHeaderWrapper title="卡片列表" content={content} extraContent={extraContent}>
         <div className={styles.cardList}>
@@ -71,7 +168,7 @@ class CardList extends PureComponent {
             renderItem={item =>
               item ? (
                 <List.Item key={item.id}>
-                  <Card hoverable className={styles.card} actions={[<a>操作一</a>, <a>操作二</a>]}>
+                  <Card hoverable className={styles.card} actions={[<a onClick={()=>this.showEditModal(item)}>修改</a>,<a onClick={()=>this.btnDelete(item)}>删除</a>]}>
                     <Card.Meta
                       avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
                       title={<a>{item.title}</a>}
@@ -85,7 +182,7 @@ class CardList extends PureComponent {
                 </List.Item>
               ) : (
                 <List.Item>
-                  <Button type="dashed" className={styles.newButton}>
+                  <Button type="dashed" className={styles.newButton} onClick={this.addItem}>
                     <Icon type="plus" /> 新增产品
                   </Button>
                 </List.Item>
@@ -93,6 +190,39 @@ class CardList extends PureComponent {
             }
           />
         </div>
+        <Modal
+          title="请修改表单信息"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <Form layout="inline" onSubmit={this.handleSubmit}>
+            <FormItem
+              extra="请输入正确的信息"
+              label="用户名"
+              required="ture"
+
+
+            >
+              {getFieldDecorator('userName', {
+                rules: [{ required: true, message: 'Please input your username!' }],
+              })
+              (
+                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+
+              )}
+            </FormItem>
+          <FormItem>
+            <Button
+              type="primary"
+              htmlType="submit"
+
+            >
+              提交
+            </Button>
+          </FormItem>
+          </Form>
+        </Modal>
       </PageHeaderWrapper>
     );
   }

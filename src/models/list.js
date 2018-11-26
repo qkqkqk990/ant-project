@@ -7,7 +7,70 @@ export default {
     list: [],
   },
 
+  reducers: {
+    queryList(state, action) {
+      return {
+        ...state,
+        list: action.payload,
+      };
+    },
+    appendList(state, action) {
+      return {
+        ...state,
+        list: state.list.concat(action.payload),
+      };
+    },
+    btnDelete(state,action){
+      // console.log(state);
+      // console.log(action);
+      const a=state.list;
+      const aa=action.payload.id;
+      // a.splice(aa,1);  三种删除item的方法：1，splice,2,for if循环，3，filter
+       const b = [];
+      a.forEach( item => {
+        if (item.id !== aa){
+          b.push(item);
+        }
+      });
+      const c = a.filter( item => item.id !== aa);//过滤就是把满足条件的返回，不满足的过滤
+      // console.log(a);
+      // a[index]
+      return{
+        ...state,
+        list:c,
+      };
+    },
+    addItem(state,action){
+      // console.log(state);
+      // console.log(action);
+      const id=state.list.length;
+      const props = {
+        title:"李焕英",
+        id,
+      };
+      const lista=state.list;
+
+      lista.unshift(props);
+      return{
+        ...state,
+        list:lista,
+      }
+    },
+     modifyItem(state,action){
+        console.log(action.payload.title);
+        const item = state.list.filter( i => i.id === action.payload.id)[0];
+        item.title = 'alipay2';
+        return{
+
+          ...state,
+          list: state.list,
+        }
+      },
+  },
+
+
   effects: {
+
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryFakeList, payload);
       yield put({
@@ -23,6 +86,8 @@ export default {
       });
     },
     *submit({ payload }, { call, put }) {
+      console.log(payload);
+
       let callback;
       if (payload.id) {
         callback = Object.keys(payload).length === 1 ? removeFakeList : updateFakeList;
@@ -35,20 +100,9 @@ export default {
         payload: response,
       });
     },
+    // *submitDelete({payload},{call,put}){
+    //   console.log(payload);
+    // },
   },
 
-  reducers: {
-    queryList(state, action) {
-      return {
-        ...state,
-        list: action.payload,
-      };
-    },
-    appendList(state, action) {
-      return {
-        ...state,
-        list: state.list.concat(action.payload),
-      };
-    },
-  },
 };
