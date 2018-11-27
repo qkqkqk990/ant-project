@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Button,Input,Icon, List,Form,Modal } from 'antd';
+import { Card, Button, Input, Icon, List, Form, Modal, Avatar,Select } from 'antd';
 
 import Ellipsis from '@/components/Ellipsis';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './CardList.less';
+import moment from 'moment';
 
 const FormItem=Form.Item;
-
 @Form.create()
 @connect(({ list, loading }) => ({
   list,
@@ -16,7 +16,10 @@ const FormItem=Form.Item;
 }))
 class CardList extends PureComponent {
 
-  state={visible:false};
+  state={
+    visible:false,
+    current:undefined,
+  };
   componentDidMount() {
 
     const { dispatch } = this.props;
@@ -51,11 +54,11 @@ class CardList extends PureComponent {
     })
   }
 
-  showEditModal=()=>{
+  showEditModal=(item)=>{
     this.setState({
       visible: true,
+      current:item,
     });
-
   }
 
   handleOk=()=>{
@@ -85,6 +88,9 @@ class CardList extends PureComponent {
 
   handleSubmit = (e) => {
     console.log(e);
+    const { current } = this.state;
+    const idx = current ? current.id : '';
+    console.log(idx);
     e.preventDefault();
     const {
       form: {
@@ -93,23 +99,33 @@ class CardList extends PureComponent {
     } = this.props;
     /// this.props.form.validateFields()
     validateFields((err, values) => {
+
       if (!err) {
         console.log('Received values of form: ', values);
+        const { dispatch } = this.props;
+        console.log(values.id);
+        dispatch({
+          type:'list/handleSubmit',
+          payload:{
+            title:values.title,
+            id:idx,
+
+          },
+
+        });
+        this.setState({
+          visible: false,
+        });
+
+
       }
+
     });
+
   }
 
 
-  modifyItem=(item)=>{
-    const {dispatch} = this.props;
-    dispatch({
-      type:'list/modifyItem',
-      payload: {
-        id: item.id,
-        title: item.title,
-      },
-    })
-  };
+
 
   render() {
 
@@ -155,6 +171,9 @@ class CardList extends PureComponent {
         getFieldDecorator,
       }
     } = this.props;
+    const { current } = this.state;
+    const title = current ? current.title : '';
+    console.log(current);
 
 
     return (
@@ -197,22 +216,12 @@ class CardList extends PureComponent {
           onCancel={this.handleCancel}
         >
           <Form layout="inline" onSubmit={this.handleSubmit}>
-            <FormItem
-              extra="请输入正确的信息"
-              label="用户名"
-              required="ture"
-
-
-            >
-              {getFieldDecorator('userName', {
-                rules: [{ required: true, message: 'Please input your username!' }],
-              })
-              (
-                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-
-              )}
+            <FormItem label="任务名称" {...this.formLayout}>
+              {getFieldDecorator('title', {
+                rules:[{ required: true, message: '请输入任务名称' }],
+                initialValue:title,
+              })(<Input placeholder="请输入" />)}
             </FormItem>
-          <FormItem>
             <Button
               type="primary"
               htmlType="submit"
@@ -220,7 +229,6 @@ class CardList extends PureComponent {
             >
               提交
             </Button>
-          </FormItem>
           </Form>
         </Modal>
       </PageHeaderWrapper>

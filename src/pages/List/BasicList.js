@@ -224,7 +224,8 @@ class BasicList extends PureComponent {
               <FormItem label="开始时间" {...this.formLayout}>
             {getFieldDecorator('createdAt', {
               rules: [{ required: true, message: '请选择开始时间' }],
-              initialValue: current.createdAt ? moment(current.createdAt) : null,
+              initialValue: current.createdAt ? moment(current.
+                createdAt) : null,
             })(
               <DatePicker
                 showTime

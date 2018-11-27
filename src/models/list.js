@@ -56,20 +56,33 @@ export default {
         list:lista,
       }
     },
-     modifyItem(state,action){
-        console.log(action.payload.title);
-        const item = state.list.filter( i => i.id === action.payload.id)[0];
-        item.title = 'alipay2';
-        return{
+     handleSubmit(state,action){
+       console.log(action);
+       // console.log(state);
+       const id1 = action.payload.id;
+       const title1 =action.payload.title;
+       console.log(title1,id1);
+       const listNew = state.list.map(i => {
+         if (i.id === id1) {
+           return {
+             ...i,
+             title: title1,
+           }
+         }
+         return i;
+       });
 
-          ...state,
-          list: state.list,
-        }
-      },
+       return{
+         ...state,
+         list:listNew,
+       }
+     },
+
   },
 
 
   effects: {
+
 
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryFakeList, payload);
@@ -78,6 +91,7 @@ export default {
         payload: Array.isArray(response) ? response : [],
       });
     },
+
     *appendFetch({ payload }, { call, put }) {
       const response = yield call(queryFakeList, payload);
       yield put({
