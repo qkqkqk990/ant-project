@@ -6,6 +6,7 @@ class NewPage04 extends PureComponent{
   state={
     selectedRowKeys:[],
     loading:false,
+    sortedInfo: {},
   }
 
   start = () => {
@@ -20,8 +21,19 @@ class NewPage04 extends PureComponent{
     },1000);
   };
 
+  setAgeSort=()=>{
+    console.log(123);
+    this.setState({
+      sortedInfo:{
+        order:'descend',
+        columnKey:'age',
+      },
+    });
+  }
+
   render(){
-    const { loading, selectedRowKeys } = this.state;
+    const { loading,sortedInfo,selectedRowKeys } = this.state;
+    console.log(sortedInfo);
     const dataSource = [{
       key: 1,
       name: '胡彦斌',
@@ -51,9 +63,29 @@ class NewPage04 extends PureComponent{
         education:"杭州师范大学",
         tags: ['cool', 'teacher'],
       },
+      {
+        key: 4,
+        name: '吴彦祖black',
+        age: 43,
+        address: '西湖区湖底公园1号',
+        like:"武术",
+        job:'演员',
+        education:"美国牛津大学",
+        tags: ['loser'],
+      },
+      {
+        key: 5,
+        name: '吴彦祖green',
+        age: 43,
+        address: '西湖区湖底公园1号',
+        like:"武术",
+        job:'演员',
+        education:"美国牛津大学",
+        tags: ['loser'],
+      },
 
     ];
-    for(let i=4;i<50;i++){
+    for(let i=6;i<50;i++){
       dataSource.push({
         key:i,
         name:`毛不易 ${i}`,
@@ -109,10 +141,6 @@ class NewPage04 extends PureComponent{
           this.setState({ selectedRowKeys: newSelectedRowKeys });
         },
       }],
-      // getCheckboxProps: record => ({
-      //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      //   name: record.name,
-      // }),
 
     };
 
@@ -135,21 +163,38 @@ class NewPage04 extends PureComponent{
       },{
         text:'吴彦祖',
         value:'吴彦祖',
-      }],
-      filterMultiple: false,
-      onFilter: (value, record) => record.address.indexOf(value) === 0,
-      // sorter: (a, b) => a.name.length - b.name.length,
+        children:[{
+          text: 'Green',
+          value: 'Green',
+        }, {
+          text: 'Black',
+          value: 'Black',
+        }],
+      },
+      ],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        sorter: (a, b) => a.name.length - b.name.length,
 
     }, {
       title: '年龄',
       dataIndex: 'age',
       key: 'age',
       sorter: (a, b) => a.age - b.age,
+      sortOrder: sortedInfo.columnKey === 'age' && sortedInfo.order,
     },
       {
         title: '职业',
         dataIndex: 'job',
         key: 'job',
+        filters:[{
+          text:'歌手',
+          value:'歌手',
+        },{
+          text:'演员',
+          value:'演员',
+        },
+        ],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
         render: (text, record) => (
           <span>
             <a href="javascript:;">Invite {record.name}</a>
@@ -194,13 +239,18 @@ class NewPage04 extends PureComponent{
 
   ];
 
-    function onChange(pagination, filters, sorter){
-      console.log('params', pagination, filters, sorter);
-    }
+    // function onChange(pagination, filters, sorter){
+    //   console.log('params', pagination, filters, sorter);
+    // }
     return(
       <PageHeaderWrapper title="查询表格应用">
 
         <Card>
+          <div>
+            <Button onClick={this.setAgeSort}>Sort age</Button>
+            <Button onClick={this.clearFilters}>Clear filters</Button>
+            <Button onClick={this.clearAll}>Clear filters and sorters</Button>
+          </div>
           <Button
             type="primary"
             onClick={this.start}
@@ -212,7 +262,7 @@ class NewPage04 extends PureComponent{
           <span>
             {hasSelected ? selectedRowKeys.length:''} 条记录被选中
           </span>
-          <Table rowSelection={rowSelection} dataSource={dataSource} columns={columns} onChange={onChange} />
+          <Table rowSelection={rowSelection} dataSource={dataSource} columns={columns}  />
         </Card>
         <TestTableOptions> </TestTableOptions>
       </PageHeaderWrapper>
