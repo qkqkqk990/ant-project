@@ -16,6 +16,7 @@ export default {
   'menu.summary.newpage01':'新页面01',
   "menu.summary.newpage02":'明星菜单',
   "menu.summary.newpage03":'新增列表项',
+  "menu.summary.newpage04":'表格应用',
   'menu.list': '列表页',
   'menu.list.searchtable': '查询表格',
   'menu.list.basiclist': '标准列表',
