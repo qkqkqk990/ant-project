@@ -17,6 +17,7 @@ export default {
   "menu.summary.newpage02":'Super Star',
   "menu.summary.newpage03":'Management System',
   "menu.summary.newpage04":'Table Apply',
+  "menu.summary.newpage05":'Table&Mock Apply',
   'menu.list': 'List',
   'menu.list.searchtable': 'Search Table',
   'menu.list.basiclist': 'Basic List',

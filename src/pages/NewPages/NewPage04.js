@@ -1,98 +1,134 @@
-import React,{PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import {Input,Card,Table,Divider,Tag,Button} from 'antd';
-import TestTableOptions from './TestTableOptions';
-class NewPage04 extends PureComponent{
-  state={
-    selectedRowKeys:[],
-    loading:false,
+import { Input, Card, Table,Tag, Button } from 'antd';
+
+class NewPage04 extends PureComponent {
+  state = {
+    selectedRowKeys: [],
+    loading: false,
     sortedInfo: {},
-  }
+    filteredInfo: {},
+    searchText: '',
+    selectedKeys: '',
+  };
 
   start = () => {
     this.setState({
       loading: true,
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       this.setState({
-        selectedRowKeys:[],
-        loading:false,
-      })
-    },1000);
+        selectedRowKeys: [],
+        loading: false,
+      });
+    }, 1000);
   };
 
-  setAgeSort=()=>{
+  setAgeSort = () => {
     console.log(123);
     this.setState({
-      sortedInfo:{
-        order:'descend',
-        columnKey:'age',
+      sortedInfo: {
+        order: 'descend',
+        columnKey: 'age',
       },
     });
-  }
+  };
 
-  render(){
-    const { loading,sortedInfo,selectedRowKeys } = this.state;
+  clearAll = () => {
+    console.log('清除所有');
+    this.setState({
+      filteredInfo: {},
+      sortedInfo: {},
+    });
+  };
+
+  handleClearFilters = (clearFilters) => () => {
+    console.log('清除选中');
+    clearFilters();
+    this.setState({
+      selectedRowKeys: [],
+      searchText: '',
+    });
+  };
+
+  handleSearchJob = (selectedKeys, confirm) => () => {
+    console.log('筛选来了');
+    console.log(selectedKeys);
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  };
+
+
+  render() {
+    const { loading, sortedInfo, selectedRowKeys, filteredInfo, searchText } = this.state;
     console.log(sortedInfo);
+    console.log(filteredInfo);
     const dataSource = [{
       key: 1,
       name: '胡彦斌',
       age: 32,
       address: '西湖区湖底公园1号',
-      like:"女",
-      job:'歌手',
-      education:"皇家音乐学院",
+      like: '女',
+      job: '歌手',
+      education: '皇家音乐学院',
       tags: ['nice', 'developer'],
+      description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
     }, {
       key: 2,
       name: '吴彦祖',
       age: 42,
       address: '西湖区湖底公园1号',
-      like:"武术",
-      job:'演员',
-      education:"美国牛津大学",
+      like: '武术',
+      job: '演员',
+      education: '美国牛津大学',
       tags: ['loser'],
+      description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
     },
       {
         key: 3,
         name: '毛不易',
         age: 22,
         address: '北京湖底公园1号',
-        like:"猫咪和吉他",
-        job:'歌手',
-        education:"杭州师范大学",
+        like: '猫咪和吉他',
+        job: '歌手',
+        education: '杭州师范大学',
         tags: ['cool', 'teacher'],
+        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
       },
       {
         key: 4,
         name: '吴彦祖black',
         age: 43,
         address: '西湖区湖底公园1号',
-        like:"武术",
-        job:'演员',
-        education:"美国牛津大学",
+        like: '武术',
+        job: '演员',
+        education: '美国牛津大学',
         tags: ['loser'],
+        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
       },
       {
         key: 5,
         name: '吴彦祖green',
         age: 43,
         address: '西湖区湖底公园1号',
-        like:"武术",
-        job:'演员',
-        education:"美国牛津大学",
+        like: '武术',
+        job: '演员',
+        education: '美国牛津大学',
         tags: ['loser'],
+        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
+
       },
 
     ];
-    for(let i=6;i<50;i++){
+    for (let i = 6; i < 50; i++) {
       dataSource.push({
-        key:i,
-        name:`毛不易 ${i}`,
-        age:`${20+i}`,
-        like:`灵魂唱歌${i}`,
-        address:`hangzhou road no.${i}`,
+        key: i,
+        name: `毛不易 ${i}`,
+        age: `${20 + i}`,
+        like: `灵魂唱歌${i}`,
+        address: `hangzhou road no.${i}`,
         tags: ['cool', 'teacher'],
+        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
       });
     }
     const rowSelection = {
@@ -101,7 +137,7 @@ class NewPage04 extends PureComponent{
         console.log(`selectedRowKeys: ${selected}`);
         this.setState({
           selectedRowKeys: selected,
-        })
+        });
       },
 
       hideDefaultSelections: true,
@@ -111,7 +147,7 @@ class NewPage04 extends PureComponent{
         onSelect: () => {
 
           this.setState({
-            selectedRowKeys: [...Array(dataSource.length+1).keys()], // 0...45
+            selectedRowKeys: [...Array(dataSource.length + 1).keys()], // 0...45
           });
         },
       }, {
@@ -144,71 +180,94 @@ class NewPage04 extends PureComponent{
 
     };
 
-    const hasSelected= selectedRowKeys.length >0;
+    const hasSelected = selectedRowKeys.length > 0;
 
     const columns = [
       {
         title: '编号',
         dataIndex: 'key',
         key: 'key',
-        fixed:true,
+        fixed: true,
       },
       {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-      filters:[{
-        text:'毛不易',
-        value:'毛不易',
-      },{
-        text:'吴彦祖',
-        value:'吴彦祖',
-        children:[{
-          text: 'Green',
-          value: 'Green',
-        }, {
-          text: 'Black',
-          value: 'Black',
-        }],
-      },
-      ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+        filters: [
+          {
+            text: '毛不易',
+            value: '毛不易',
+          },
+          {
+            text: '吴彦祖',
+            value: '吴彦祖',
+            children: [
+              {
+                text: 'Green',
+                value: 'Green',
+              },
+              {
+                text: 'Black',
+                value: 'Black',
+              }
+            ],
+          },
+        ],
+        onFilter: (value, record) => {
+          console.log(value, record);
+          return record.name.indexOf(value) === 0;
+        },
         sorter: (a, b) => a.name.length - b.name.length,
 
-    }, {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
-      sorter: (a, b) => a.age - b.age,
-      sortOrder: sortedInfo.columnKey === 'age' && sortedInfo.order,
-    },
+      }, {
+        title: '年龄',
+        dataIndex: 'age',
+        key: 'age',
+        sorter: (a, b) => a.age - b.age,
+        sortOrder: sortedInfo.columnKey === 'age' && sortedInfo.order,
+      },
       {
         title: '职业',
         dataIndex: 'job',
         key: 'job',
-        filters:[{
-          text:'歌手',
-          value:'歌手',
-        },{
-          text:'演员',
-          value:'演员',
-        },
-        ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-        render: (text, record) => (
-          <span>
-            <a href="javascript:;">Invite {record.name}</a>
-            <Divider type="vertical"/>
-            <a href="javascript:;">Delete</a>
-          </span>
-        ),
-        filterDropdown: () => (
-          <div className="custom-filter-dropdown">
-            <Input />
-            <Button type="primary">Search</Button>
-            <Button ghost>Reset</Button>
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+          <div>
+            <Input
+              placeholde="search me"
+              ref={ele => {this.searchInput = ele}}
+              value={selectedKeys[0]}
+              onChange={e => {
+                console.log(setSelectedKeys);
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+              }}
+              onPressEnter={this.handleSearchJob(selectedKeys, confirm)}
+            />
+            <Button type="primary" onClick={this.handleSearchJob(selectedKeys, confirm)}>Search</Button>
+            <Button onClick={this.handleClearFilters(clearFilters)}>Reset</Button>
           </div>
         ),
+        // onFilter: (value, record) => record.job.toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: (visible) => {
+          if (visible) {
+            setTimeout(() => {
+              this.searchInput.focus();
+            });
+          }
+        },
+
+        //搜索匹配
+        onFilter: (value, record) => {
+          console.log(value, record);
+          return record.job && record.job.toLowerCase().includes(value.toLowerCase())
+        },
+        render: (text) => searchText && text ? (
+          <span>
+            {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+              fragment.toLowerCase() === searchText.toLowerCase()
+                ? <span key={i} style={{color: '#f50'}}>{fragment}</span> : fragment // eslint-disable-line
+            ))}
+          </span>
+        ) : text,
       },
 
       {
@@ -234,21 +293,22 @@ class NewPage04 extends PureComponent{
       {
         title: '住址',
         dataIndex: 'address',
+
         key: 'address',
       },
+      { title: 'Action', dataIndex: '', key: 'x', render: () => <a href="javascript:;">Delete</a> },
 
-  ];
+    ];
 
     // function onChange(pagination, filters, sorter){
     //   console.log('params', pagination, filters, sorter);
     // }
-    return(
+    return (
       <PageHeaderWrapper title="查询表格应用">
 
         <Card>
           <div>
             <Button onClick={this.setAgeSort}>Sort age</Button>
-            <Button onClick={this.clearFilters}>Clear filters</Button>
             <Button onClick={this.clearAll}>Clear filters and sorters</Button>
           </div>
           <Button
@@ -256,18 +316,25 @@ class NewPage04 extends PureComponent{
             onClick={this.start}
             ghost
             loading={loading}
-            >
+          >
             刷新
           </Button>
           <span>
-            {hasSelected ? selectedRowKeys.length:''} 条记录被选中
+            {hasSelected ? selectedRowKeys.length : ''} 条记录被选中
           </span>
-          <Table rowSelection={rowSelection} dataSource={dataSource} columns={columns}  />
+          <Table
+            rowSelection={rowSelection}
+            dataSource={dataSource}
+            columns={columns}
+            bordered
+            title={()=>'表格查询/排序/筛选应用'}
+            expandedRowRender={record => <p style={{ color:'green'}}>{record.description} </p>}
+            footer={()=>'总结'}
+          />
         </Card>
-        <TestTableOptions> </TestTableOptions>
       </PageHeaderWrapper>
 
-    )
+    );
   };
 };
 export default NewPage04;
