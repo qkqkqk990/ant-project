@@ -2,6 +2,9 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
+export async function newMock(){
+  return request('/api/newMock/users');
+}
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }

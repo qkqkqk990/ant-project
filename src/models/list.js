@@ -1,13 +1,24 @@
-import { queryFakeList, removeFakeList, addFakeList, updateFakeList } from '@/services/api';
+import { queryFakeList, removeFakeList, addFakeList, updateFakeList,newMock } from '@/services/api';
 
 export default {
   namespace: 'list',
 
   state: {
     list: [],
+    users:{},
   },
 
   reducers: {
+
+    newMockList(state,action){
+      console.log(action);
+      console.log("成功引入newMock方法");
+      return{
+        ...state,
+        users:action.payload,
+      }
+    },
+
     queryList(state, action) {
       return {
         ...state,
@@ -20,6 +31,7 @@ export default {
         list: state.list.concat(action.payload),
       };
     },
+
     btnDelete(state,action){
       // console.log(state);
       // console.log(action);
@@ -57,7 +69,7 @@ export default {
       }
     },
      handleSubmit(state,action){
-       console.log(action);
+
        // console.log(state);
        const id1 = action.payload.id;
        const title1 =action.payload.title;
@@ -82,7 +94,14 @@ export default {
 
 
   effects: {
+    *addNew(_,{call,put}){
 
+      const response = yield call(newMock);
+      yield put({
+        type:'newMockList',
+        payload:response,
+      });
+    },
 
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryFakeList, payload);

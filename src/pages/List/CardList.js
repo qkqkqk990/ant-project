@@ -31,6 +31,10 @@ class CardList extends PureComponent {
       },
     });
 
+    dispatch({
+      type:'list/addNew',
+    });
+
   }
 
   btnDelete = (item)=>{
@@ -52,6 +56,8 @@ class CardList extends PureComponent {
         id: item.id,
       },
     })
+
+
   }
 
   showEditModal=(item)=>{
@@ -231,6 +237,7 @@ class CardList extends PureComponent {
             </Button>
           </Form>
         </Modal>
+        <table></table>
       </PageHeaderWrapper>
     );
   }

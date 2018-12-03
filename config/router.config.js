@@ -123,12 +123,7 @@ export default [
             name: "newpage04",//新增文件
             component: './NewPages/NewPage04',
           },
-          {
-            path: '/my/summary/np05',
-            // target: '_blank', // 点击新窗口打开
-            name: "newpage05",//新增文件
-            component: './NewPages/TableAndMock',
-          },
+
 
         ],
       },

@@ -72,7 +72,52 @@ class NewPage04 extends PureComponent {
       job: '歌手',
       education: '皇家音乐学院',
       tags: ['nice', 'developer'],
-      description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
+      phone:'027-50758000',
+      tel:'027-50758002',
+      description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
+      children:[
+        {
+          key: 11,
+          name: '胡潇缤',
+          age: 32,
+          address: '西湖区湖底公园1号',
+          like: '女',
+          job: '歌手',
+          education: '皇家音乐学院',
+          tags: ['nice', 'developer'],
+          phone:'027-50758000',
+          tel:'027-50758002',
+          description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
+          children:[
+            {
+              key: 111,
+              name: '胡小兵',
+              age: 32,
+              address: '西湖区湖底公园1号',
+              like: '女',
+              job: '歌手',
+              education: '皇家音乐学院',
+              tags: ['nice', 'developer'],
+              phone:'027-50758000',
+              tel:'027-50758002',
+              description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
+            },
+            {
+              key: 112,
+              name: '胡冰冰',
+              age: 32,
+              address: '西湖区湖底公园1号',
+              like: '女',
+              job: '歌手',
+              education: '皇家音乐学院',
+              tags: ['nice', 'developer'],
+              phone:'027-50758000',
+              tel:'027-50758002',
+              description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
+            },
+          ]
+        }
+      ]
     }, {
       key: 2,
       name: '吴彦祖',
@@ -82,6 +127,8 @@ class NewPage04 extends PureComponent {
       job: '演员',
       education: '美国牛津大学',
       tags: ['loser'],
+      phone:'027-50758000',
+      tel:'027-50758002',
       description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
     },
       {
@@ -93,6 +140,8 @@ class NewPage04 extends PureComponent {
         job: '歌手',
         education: '杭州师范大学',
         tags: ['cool', 'teacher'],
+        phone:'027-50758000',
+        tel:'027-50758002',
         description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
       },
       {
@@ -104,6 +153,8 @@ class NewPage04 extends PureComponent {
         job: '演员',
         education: '美国牛津大学',
         tags: ['loser'],
+        phone:'027-50758000',
+        tel:'027-50758002',
         description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
       },
       {
@@ -115,6 +166,8 @@ class NewPage04 extends PureComponent {
         job: '演员',
         education: '美国牛津大学',
         tags: ['loser'],
+        phone:'027-50758000',
+        tel:'027-50758002',
         description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
 
       },
@@ -128,6 +181,8 @@ class NewPage04 extends PureComponent {
         like: `灵魂唱歌${i}`,
         address: `hangzhou road no.${i}`,
         tags: ['cool', 'teacher'],
+        phone:'027-50758016',
+        tel:'027-50758002',
         description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
       });
     }
@@ -187,12 +242,15 @@ class NewPage04 extends PureComponent {
         title: '编号',
         dataIndex: 'key',
         key: 'key',
-        fixed: true,
+        fixed: 'left',
+        width:100,
       },
       {
         title: '姓名',
         dataIndex: 'name',
         key: 'name',
+        width:100,
+        fixed:'left',
         filters: [
           {
             text: '毛不易',
@@ -223,6 +281,7 @@ class NewPage04 extends PureComponent {
         title: '年龄',
         dataIndex: 'age',
         key: 'age',
+        width:100,
         sorter: (a, b) => a.age - b.age,
         sortOrder: sortedInfo.columnKey === 'age' && sortedInfo.order,
       },
@@ -230,6 +289,7 @@ class NewPage04 extends PureComponent {
         title: '职业',
         dataIndex: 'job',
         key: 'job',
+        width:100,
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
           <div>
             <Input
@@ -274,11 +334,13 @@ class NewPage04 extends PureComponent {
         title: '爱好',
         dataIndex: 'like',
         key: 'like',
+        width:100,
       },
       {
-        title: 'Tags',
+        title: '标签',
         key: 'tags',
         dataIndex: 'tags',
+        width:100,
         render: tags => (
           <span>
             {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
@@ -286,19 +348,64 @@ class NewPage04 extends PureComponent {
         ),
       },
       {
+        title: '电话',
+        key: 'phone',
+        dataIndex: 'phone',
+        colSpan:2,
+      },
+      {
+        title: '电话',
+        key: 'tel',
+        dataIndex: 'tel',
+        colSpan:0,
+      },
+
+      {
         title: '学历',
         dataIndex: 'education',
         key: 'education',
+        width:100,
       },
       {
         title: '住址',
         dataIndex: 'address',
 
         key: 'address',
-      },
-      { title: 'Action', dataIndex: '', key: 'x', render: () => <a href="javascript:;">Delete</a> },
+        width:100,
+        children:[
+          {
+            title:'Street',
+            children:[
+              {
+                title:'No.'
+              },
+              {
+                title:'Building'
+              }
+            ]
 
-    ];
+          },
+
+          {
+            title:'Block'
+          },
+        ]
+      },
+      { title: 'Action',
+        dataIndex: '',
+        key: 'x',
+        width:100,
+        render: () => <a href="javascript:;">Delete</a>
+      },
+
+      {
+        title: '描述',
+        dataIndex: 'description',
+        key: 'description',
+        width:200,
+        fixed: 'right',
+      }
+      ];
 
     // function onChange(pagination, filters, sorter){
     //   console.log('params', pagination, filters, sorter);
@@ -327,8 +434,9 @@ class NewPage04 extends PureComponent {
             dataSource={dataSource}
             columns={columns}
             bordered
+            scroll={{x: '130%',y:400}}
             title={()=>'表格查询/排序/筛选应用'}
-            expandedRowRender={record => <p style={{ color:'green'}}>{record.description} </p>}
+            // expandedRowRender={record => <p style={{ color:'green'}}>{record.description} </p>}
             footer={()=>'总结'}
           />
         </Card>
